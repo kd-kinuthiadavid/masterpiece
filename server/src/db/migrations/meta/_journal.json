@@ -15,6 +15,13 @@
       "when": 1744885304641,
       "tag": "0001_cheerful_sersi",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744890579664,
+      "tag": "0002_bizarre_boomerang",
+      "breakpoints": true
     }
   ]
 }
