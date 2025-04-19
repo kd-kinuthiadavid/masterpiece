@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import useLoginForm, { LoginFormSchema } from "./_components/useLoginForm";
 import {
   Form,
@@ -11,16 +15,46 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import useCookiesUtils from "@/lib/useCookiesUtils";
+import { useApiClient } from "@/lib/apiClient";
+import { toast } from "sonner";
+
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const { loginForm } = useLoginForm();
+  const { setAccessToken, setCurrentUser } = useCookiesUtils();
+  const apiClient = useApiClient();
 
-  const onSubmit = (data: LoginFormSchema) => {
-    console.log("***** SUBMITTED LOGIN FORM *****");
-    console.log(data);
+  const onSubmit = async (data: LoginFormSchema) => {
+    setIsLoading(true);
+    const payload = {
+      email: data.email,
+    };
+
+    try {
+      const response: any = await apiClient.post("/auth/login", payload);
+      console.log("***** LOGIN RESPONSE *****", response.data);
+      if (response.data.code === 200 && response.data.status === "success") {
+        setAccessToken(response.data.data.token);
+        setCurrentUser(response.data.data.user);
+        toast.success("Logged in successfully");
+
+        if (response.data.data.user.role === "BUYER") {
+          router.push("/dashboard/buyer");
+        } else if (response.data.data.user.role === "VENDOR") {
+          router.push("/dashboard/vendor");
+        } else if (response.data.data.user.role === "RIDER") {
+          router.push("/dashboard/rider");
+        }
+      }
+    } catch (error) {
+      console.error("Error logging in", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="max-w-[80%] md:max-w-[60%] lg:max-w-[40%] flex flex-col gap-y-16">

@@ -19,7 +19,6 @@ export async function middleware(request: NextRequest) {
     // Verify and decode the JWT token
     const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
     const { payload } = await jwtVerify(accessToken, secret);
-    console.log("***** JWT PAYLOAD *****", payload);
 
     // Get the user's role from the token
     const userRole = payload.role as string;
@@ -38,8 +37,7 @@ export async function middleware(request: NextRequest) {
     }
 
     return NextResponse.next();
-  } catch (error) {
-    console.log("***** M/W ERROR *****", error);
+  } catch {
     // If token verification fails, redirect to login
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }

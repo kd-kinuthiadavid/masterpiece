@@ -31,7 +31,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { registerForm } = useRegisterForm();
-  const { setAccessToken } = useCookiesUtils();
+  const { setAccessToken, setCurrentUser } = useCookiesUtils();
   const apiClient = useApiClient();
 
   const userRoles = [
@@ -64,7 +64,7 @@ export default function Register() {
       const response: any = await apiClient.post("/auth/signup", payload);
       if (response.data.code === 201 && response.data.status === "success") {
         setAccessToken(response.data.data.token);
-
+        setCurrentUser(response.data.data.user);
         const newUser = response.data.data.user;
 
         if (newUser.role === "BUYER") {

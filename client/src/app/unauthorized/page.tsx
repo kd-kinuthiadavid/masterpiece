@@ -27,6 +27,7 @@ const roleRoutes: { [key: string]: { path: string; title: string } } = {
 export default function UnauthorizedPage() {
   const router = useRouter();
   const [userRole, setUserRole] = useState<string>("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
