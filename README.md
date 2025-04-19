@@ -3,7 +3,7 @@
 A mini role-based platform where users can register and log in as either a Buyer,
 Vendor, or Rider built with NestJS (Backend) and Next.js (Frontend).
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/4a79a2faab264683b3c6c39e232de635?sid=1d5cb289-93de-4a65-9edb-e5ad05f873b7" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+[Watch the UI Walkthrough Video](https://www.loom.com/share/4a79a2faab264683b3c6c39e232de635?sid=a76e732f-ba0b-4a48-9372-2a39aec0ad5e)
 
 ## 🚀 Tech Stack
 
