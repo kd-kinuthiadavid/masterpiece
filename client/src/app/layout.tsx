@@ -27,9 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${raleway.className} antialiased`}>
-        <CookiesProvider>{children}</CookiesProvider>
-        <Toaster />
-        <Analytics />
+        <CookiesProvider>
+          <Toaster />
+          {children}
+          <Analytics />
+        </CookiesProvider>
       </body>
     </html>
   );
