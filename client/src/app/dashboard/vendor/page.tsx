@@ -11,15 +11,29 @@ import useCookiesUtils from "@/lib/useCookiesUtils";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useApiClient } from "@/lib/apiClient";
+import useAddProductsForm, {
+  AddProductsFormSchema,
+} from "./_components/useAddProductsForm";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 export default function VendorDashboard() {
   const [listings, setListings] = useState<any[]>([]);
   const [isFetchingProducts, setIsFetchingProducts] = useState(false);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [showAddProductForm, setShowAddProductForm] = useState(false);
 
   const router = useRouter();
   const { removeAllCookies, getCurrentUser } = useCookiesUtils();
   const apiClient = useApiClient();
   const currentUser = getCurrentUser();
+  const { addProductsForm } = useAddProductsForm();
 
   function handleLogout() {
     // remove access_token from cookies
@@ -29,22 +43,49 @@ export default function VendorDashboard() {
     router.push("/auth/login");
   }
 
+  async function handleAddProduct(data: AddProductsFormSchema) {
+    try {
+      setIsAddingProduct(true);
+      const response = await apiClient.post("/products", {
+        name: data.name,
+        description: data.description,
+        price: parseFloat(data.price),
+      });
+      console.log("***** PRODUCT CREATE RESPONSE", response);
+      if (response.error) {
+        toast.error(response.error.message);
+      } else {
+        toast.success("Product added successfully");
+      }
+    } catch (error) {
+      console.error("***** PRODUCT CREATE ERROR", error);
+      toast.error("Failed to add product");
+    } finally {
+      setIsAddingProduct(false);
+      setShowAddProductForm(false);
+      addProductsForm.reset();
+      fetchListings();
+    }
+  }
+
+  // fetch listings
+  async function fetchListings() {
+    setIsFetchingProducts(true);
+    const listings: any = await apiClient.get("/products");
+    console.log("***** listings", listings);
+    setListings(listings.data);
+    setIsFetchingProducts(false);
+  }
+
   useEffect(() => {
-    // fetch listings
-    const fetchListings = async () => {
-      setIsFetchingProducts(true);
-      const listings: any = await apiClient.get("/products");
-      console.log("***** listings", listings);
-      setListings(listings.data);
-      setIsFetchingProducts(false);
-    };
     fetchListings();
   }, []);
+
   return (
-    <div className="flex flex-col gap-y-10 items-center justify-center h-screen">
+    <div className="flex flex-col gap-y-10 items-center justify-center h-screen overflow-y-auto">
       <h1>Welcome Vendor! Manage your listings.</h1>
 
-      <div className="flex flex-col gap-y-6">
+      <div className="flex flex-col gap-y-6 min-w-[80%] md:min-w-[60%] lg:min-w-[30%]">
         <div className="flex gap-x-3">
           <Avatar className="w-16 h-16">
             <AvatarFallback>
@@ -65,23 +106,109 @@ export default function VendorDashboard() {
         <Separator />
         <div className="flex flex-col gap-y-6">
           <div className="flex items-end justify-between gap-x-10">
-            <h2 className="text-lg font-semibold">Your Listings</h2>
-            <Button>
+            <h2 className="text-2xl font-semibold">Your Products</h2>
+            <Button
+              disabled={isAddingProduct}
+              onClick={() => {
+                setShowAddProductForm(true);
+              }}
+            >
               <Plus className="w-4 h-4" />
               Add Listing
             </Button>
           </div>
           <div className="flex flex-col gap-y-6">
+            {showAddProductForm && (
+              <div className="flex flex-col gap-y-6">
+                <h2 className="text-lg font-semibold">Add Listing</h2>
+                <Form {...addProductsForm}>
+                  <form
+                    onSubmit={addProductsForm.handleSubmit(handleAddProduct)}
+                    className="flex flex-col gap-y-6 border border-gray-200 rounded-md p-4"
+                  >
+                    <FormField
+                      control={addProductsForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              autoComplete="name"
+                              placeholder="e.g. Apple"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={addProductsForm.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Input
+                              autoComplete="description"
+                              placeholder="e.g. A red apple"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={addProductsForm.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Price</FormLabel>
+                          <FormControl>
+                            <Input
+                              autoComplete="price"
+                              placeholder="e.g. 1.99"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="flex justify-between gap-x-4 w-full">
+                      <Button
+                        type="submit"
+                        disabled={isAddingProduct}
+                        className="w-1/2"
+                      >
+                        {isAddingProduct ? "Adding..." : "Add Listing"}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowAddProductForm(false)}
+                        className="w-1/2"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
+              </div>
+            )}
+
             {isFetchingProducts ? (
               <div className="flex items-center justify-center">
                 <Loader2 className="w-4 h-4 animate-spin" />
               </div>
             ) : listings.length > 0 ? (
-              listings.map((listing) => (
+              listings.map((listing, idx) => (
                 <>
-                  <div key={listing.id} className="flex flex-col gap-y-1">
+                  <div key={idx} className="flex flex-col gap-y-1">
                     <div className="flex flex-col">
-                      <p className="text-lg font-semibold">{listing.name}</p>
+                      <p className="text-base font-semibold">{listing.name}</p>
                       <p className="text-md text-gray-500 truncate">
                         {listing.description}
                       </p>
