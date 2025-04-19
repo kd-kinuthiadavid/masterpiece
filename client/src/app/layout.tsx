@@ -3,6 +3,7 @@
 import { Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { CookiesProvider } from "next-client-cookies/server";
 
 const raleway = Raleway({
   subsets: ["latin", "latin-ext", "vietnamese"],
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${raleway.className} antialiased`}>
-        {children}
+        <CookiesProvider>{children}</CookiesProvider>
         <Toaster />
       </body>
     </html>
