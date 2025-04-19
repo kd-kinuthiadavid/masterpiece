@@ -1,9 +1,15 @@
 "use client";
 
-import { raleway } from "@/app/layout";
+import { Raleway } from "next/font/google";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, ToasterProps } from "sonner";
 
+const raleway = Raleway({
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["300", "400", "500", "600", "700"],
+  preload: true,
+  fallback: ["system-ui"],
+});
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "light" } = useTheme();
 

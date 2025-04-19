@@ -4,7 +4,7 @@ import { Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-export const raleway = Raleway({
+const raleway = Raleway({
   subsets: ["latin", "latin-ext", "vietnamese"],
   weight: ["300", "400", "500", "600", "700"],
   preload: true,
