@@ -27,8 +27,8 @@ export class ProductsController {
 
   @Roles(Role.VENDOR)
   @Get()
-  async findAll() {
-    const products = await this.productsService.findAll();
+  async findAll(@Request() req: ExpressRequest & { user: { userId: string } }) {
+    const products = await this.productsService.findAll(req.user.userId);
     return products;
   }
 }

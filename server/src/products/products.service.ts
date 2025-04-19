@@ -26,7 +26,7 @@ export class ProductsService {
     });
   }
 
-  async findAll() {
-    return this.productsRepository.findAll();
+  async findAll(vendorId: string) {
+    return this.productsRepository.findAll(vendorId);
   }
 }

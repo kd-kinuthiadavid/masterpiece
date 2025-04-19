@@ -19,7 +19,7 @@ export class ProductsRepository {
     return product;
   }
 
-  async findAll() {
+  async findAll(vendorId: string) {
     return await this.db.client
       .select({
         id: products.id,
@@ -35,6 +35,7 @@ export class ProductsRepository {
         },
       })
       .from(products)
+      .where(eq(products.vendorId, vendorId))
       .leftJoin(users, eq(products.vendorId, users.id));
   }
 }
