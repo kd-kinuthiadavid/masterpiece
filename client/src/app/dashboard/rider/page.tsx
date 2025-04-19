@@ -19,20 +19,24 @@ export default function RiderDashboard() {
     <div className="flex flex-col gap-y-10 items-center justify-center h-screen">
       <h1>Welcome Rider! View delivery schedule.</h1>
 
-      <div className="flex gap-x-3">
-        <Avatar className="w-16 h-16">
-          <AvatarFallback>{currentUser?.name?.split(" ")[0][0]}</AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col">
-          <p className="text-lg font-semibold">{currentUser?.name}</p>
-          <p className="text-md text-gray-500">{currentUser?.email}</p>
-          <p className="text-md text-gray-500 capitalize">
-            <span className="font-semibold">Role:</span>{" "}
-            {currentUser?.role?.toLowerCase()}
-          </p>
+      <div className="flex flex-col gap-y-6">
+        <div className="flex gap-x-3">
+          <Avatar className="w-16 h-16">
+            <AvatarFallback>
+              {currentUser?.name?.split(" ")[0][0]}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col">
+            <p className="text-lg font-semibold">{currentUser?.name}</p>
+            <p className="text-md text-gray-500">{currentUser?.email}</p>
+            <p className="text-md text-gray-500 capitalize">
+              <span className="font-semibold">Role:</span>{" "}
+              {currentUser?.role?.toLowerCase()}
+            </p>
+          </div>
         </div>
+        <Button onClick={handleLogout}>Logout</Button>
       </div>
-      <Button onClick={handleLogout}>Logout</Button>
     </div>
   );
 }
