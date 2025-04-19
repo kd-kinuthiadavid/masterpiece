@@ -24,6 +24,7 @@ export default function RiderDashboard() {
           <Avatar className="w-16 h-16">
             <AvatarFallback>
               {currentUser?.name?.split(" ")[0][0]}
+              {currentUser?.name?.split(" ")[1][0]}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">

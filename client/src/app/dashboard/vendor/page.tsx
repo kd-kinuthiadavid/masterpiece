@@ -85,7 +85,7 @@ export default function VendorDashboard() {
     <div className="flex flex-col gap-y-10 items-center justify-center h-screen overflow-y-auto">
       <h1>Welcome Vendor! Manage your listings.</h1>
 
-      <div className="flex flex-col gap-y-6 min-w-[80%] md:min-w-[60%] lg:min-w-[30%]">
+      <div className="flex flex-col gap-y-6 max-w-[90%] min-w-[80%] md:min-w-[60%] lg:min-w-[30%]">
         <div className="flex gap-x-3">
           <Avatar className="w-16 h-16">
             <AvatarFallback>
@@ -126,72 +126,73 @@ export default function VendorDashboard() {
                     onSubmit={addProductsForm.handleSubmit(handleAddProduct)}
                     className="flex flex-col gap-y-6 border border-gray-200 rounded-md p-4"
                   >
-                    <FormField
-                      control={addProductsForm.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name</FormLabel>
-                          <FormControl>
-                            <Input
-                              autoComplete="name"
-                              placeholder="e.g. Apple"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={addProductsForm.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Input
-                              autoComplete="description"
-                              placeholder="e.g. A red apple"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={addProductsForm.control}
-                      name="price"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Price</FormLabel>
-                          <FormControl>
-                            <Input
-                              autoComplete="price"
-                              placeholder="e.g. 1.99"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
+                    <div className="flex flex-col gap-y-4">
+                      <FormField
+                        control={addProductsForm.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                autoComplete="name"
+                                placeholder="e.g. Apple"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={addProductsForm.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Input
+                                autoComplete="description"
+                                placeholder="e.g. A red apple"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={addProductsForm.control}
+                        name="price"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Price</FormLabel>
+                            <FormControl>
+                              <Input
+                                autoComplete="price"
+                                placeholder="e.g. 1.99"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                     <div className="flex justify-between gap-x-4 w-full">
-                      <Button
-                        type="submit"
-                        disabled={isAddingProduct}
-                        className="w-1/2"
-                      >
-                        {isAddingProduct ? "Adding..." : "Add Listing"}
-                      </Button>
                       <Button
                         variant="outline"
                         onClick={() => setShowAddProductForm(false)}
-                        className="w-1/2"
+                        className="min-w-[40%]"
                       >
                         Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        disabled={isAddingProduct}
+                        className="min-w-[40%]"
+                      >
+                        {isAddingProduct ? "Adding..." : "Add Listing"}
                       </Button>
                     </div>
                   </form>

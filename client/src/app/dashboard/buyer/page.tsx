@@ -19,11 +19,12 @@ export default function BuyerDashboard() {
     <div className="flex flex-col gap-y-10 items-center justify-center h-screen">
       <h1>Welcome Buyer! Access the marketplace.</h1>
 
-      <div className="flex flex-col gap-y-6">
+      <div className="flex flex-col gap-y-6 max-w-[90%] min-w-[80%] md:min-w-[60%] lg:min-w-[30%]">
         <div className="flex gap-x-3">
           <Avatar className="w-16 h-16">
             <AvatarFallback>
               {currentUser?.name?.split(" ")[0][0]}
+              {currentUser?.name?.split(" ")[1][0]}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
